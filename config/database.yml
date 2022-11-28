@@ -83,4 +83,4 @@ production:
   <<: *default
   database: pq_post_office_production
   username: pq_post_office
-  password: <%= ENV["PQ_POST_OFFICE_DATABASE_PASSWORD"] %>
+  password: <%= ENV['DATABASE_URL'] %>
