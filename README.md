@@ -5,20 +5,28 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+## Tech Stack
 
-* System dependencies
+* Ruby 3.1.2
+* Postgres
+* Tailwind
+* Turbo/Stimulus
+* Postgres
+* Redis
+* Sidekiq
 
-* Configuration
+## Setup
 
-* Database creation
+    bundle
+    rails db:create
+    rails db:migrate
 
-* Database initialization
+## Run Tests
+    rspec
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
+## Run Server
+    rails s
+    https://localhost:3000
 
 * Deployment instructions
-
-* ...
+  * Deployed on Render
