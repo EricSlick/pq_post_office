@@ -30,3 +30,15 @@ Things you may want to cover:
 
 * Deployment instructions
   * Deployed on Render
+  * Auto deploy on branch main update
+
+## Development Log
+
+**11/28/2022**
+
+* Time: 2 hours
+* Initial Rails App created
+* Deploy to Render
+
+**11/29//2022**
+
