@@ -1,11 +1,13 @@
 class DashController < ApplicationController
   def index
-    @messages = Message.with_phone(dash_params[:search_phone])
+    phone = dash_params.fetch(:search, {})
+    phone_num = phone['phone']
+    @messages = Message.with_phone(phone_num)
   end
 
   private
 
   def dash_params
-    params.permit(:search_phone)
+    params.permit(search: [:phone])
   end
 end

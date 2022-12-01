@@ -54,7 +54,7 @@ I started with the unfamiliar to get it right before moving to the familiar.
   * left id as the identity column but if this level of portability isn't needed, the id could have been a uuid.
 * Formal(ish) Proposal and other readme additions
 * Model creation and indexing with specs
-
+* Dash Controller: index/search
 
 # Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 
