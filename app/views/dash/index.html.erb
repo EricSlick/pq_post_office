@@ -1,7 +1,14 @@
-<main class="container">
-  <div class="row text-center justify-content-center">
-    <div class="col">
-      <h1 class="display-4">Hello World!</h1>
-    </div>
+<main class="w-full">
+  <%= render partial: '/header/show' %>
+  <%= render partial: 'search' %>
+
+  <div class="flex mb-1 border-2 truncate">
+    <div class="w-1/12 bg-gray-300 h-7 pl-2">Status</div>
+    <div class="w-2/12 bg-gray-300 h-7 pl-2">Phone Numbers</div>
+    <div class="w-9/12 bg-gray-300 h-7 pl-2">Message Body</div>
   </div>
+
+  <% @messages.each do |message| %>
+    <%= render partial: 'row', locals: {message: message} %>
+  <% end %>
 </main>
