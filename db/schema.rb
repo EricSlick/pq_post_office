@@ -16,12 +16,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_30_202138) do
   enable_extension "plpgsql"
 
   create_table "messages", force: :cascade do |t|
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "status", limit: 15
     t.string "phone", limit: 30
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["phone"], name: "index_messages_on_phone"
+    t.index ["status"], name: "index_messages_on_status"
+    t.index ["uuid"], name: "index_messages_on_uuid", unique: true
   end
 
 end

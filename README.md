@@ -1,9 +1,7 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+# ParentSquare PostOffice
+This is a take home tech interview. The purpose is to build an application that manages
+the receiving of messages and sending of those messages to one of two third party services 
+that are responsible for sending those messages to end users.
 
 ## Tech Stack
 
@@ -54,10 +52,11 @@ I started with the unfamiliar to get it right before moving to the familiar.
 * Improved Message model to have a uuid column
   * overkill for this project but this allows for easier portability of data between databases such as for distributed databases that need to have their data balanced between dbs
   * left id as the identity column but if this level of portability isn't needed, the id could have been a uuid.
-* APIs
+* Formal(ish) Proposal and other readme additions
+* Model creation and indexing with specs
 
 
-# Proposal
+# Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 
 A more formal proposal would include more detail about alternatives, any spikes and their result, etc.
 
@@ -241,8 +240,29 @@ responsibility.
 ### Disadvantages Of This Approach
 It is added complexity and not every application needs this.
 
+### Other Use Cases 
+This pattern is useful for isolating gems as well as third party apis. Sometimes a gem is great
+but it may stop being supported, a better option comes along or a new, cooler version of it is released.
+By isolating gems this way, you can be better prepared for these eventualities.
 
+You can isolate internal services using this pattern which allows easier handling of version
+changes, refactorings and even replacing those services. 
 
+Finally, you can approach the internal features of an application by isolating such features or 
+groups of features. There are other ways to achieve this, such as through rails engines or just 
+creating intentional divisions in the code that encourage isolation.
 
+## Database Architecture
+This is simple. There's a message. It has a phone number and a message body. I needs to track
+what state it is in (received, sent, delivered). Only one model is needed to track this.
 
-  
+**Messages Table**
+  * uuid (demonstrates how to achieve portability between databases)
+  * status (received, sent, delivered)
+  * phone
+  * body
+
+**indexes**
+* uuid
+* status
+* phone
