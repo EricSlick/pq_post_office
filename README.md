@@ -171,7 +171,6 @@ Again, this is assuming there are more than just a few APIs.
       - v1
       - ...
     - ...
-  
 
 ### Restful, vs Protobuf vs Pub/Sub
 Since the outgoing APIs are already restful, that's what I'm using for my incoming api (messages received).
@@ -181,6 +180,34 @@ asynchronous calls. Pub/Sub works well for internal APIs as it simplifies the AP
 single API that uses JSON to describe the action along with the data. Pub/Sub is a good solution
 for his approach. However, reaching out to third parties for data requires implementing their
 own API solution
+
+## A note about the api folder/code structure
+For this simple exercise, I'm keeping all the api code (controllers, classes, support classes) in the
+controller/api... structure. this breaks Rails conventions but I do this to keep all the code 
+together relative to what it's supporting. However, non-controller code would typically be organized in some 
+other place/s. I personally like to keep business logic together as much as possible. I have been trying
+out organizing all business logic under a folder called 'logic' in the 'app' folder. I try to keep
+all business logic out of controllers and models.
+
+This would affect how I am organizing all the non-controller specific code to something like this...
+
+    app/logic/api/public/incoming/v1/messages_logic.rb
+
+The controller in the same folder path would simple instantiate MessagesLogic and pass the
+data it received on to the logic object. The outgoing API would also be moved into the logic
+folder and there would be no corresponding controller for it since it is outgoing and controllers
+handle requests.
+
+    app/logic/api/public/outgoing/delivery/adapter_manager.rb
+    app/logic/api/public/outgoing/delivery/balance_manager.rb
+    app/logic/api/public/outgoing/delivery/adapters...
+    etc.
+
+There are limitations to how much business logic could be moved into the logic folder. Models,
+for instance, are particularly difficult to keep free of business logic. Views are also problematic
+as helpers and javascript often contain business logic.
+
+I may try to refactor the non-controller code into a logic folder if I have time.
 
 ## Isolating Third Party Services
 Again, for this app, what I'm doing is overkill, but it still benefits from this approach.
