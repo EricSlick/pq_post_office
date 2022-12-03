@@ -9,7 +9,7 @@ class Messages < ActiveRecord::Migration[7.0]
       t.string :adapter
       t.datetime :sent_at
       t.datetime :delivered_at
-      t.string :status_message
+      t.string :status_info
       t.timestamps
     end
   end
