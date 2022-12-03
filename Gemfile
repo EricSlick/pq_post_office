@@ -52,12 +52,14 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 gem 'simple_form'
+gem 'sidekiq', '< 8'
 gem 'faker' # for generating fake messages in all environments
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails'
+  gem 'rspec-sidekiq'
 end
 
 group :development do

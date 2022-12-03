@@ -37,24 +37,29 @@ I've never used Render before or Tailwind. I am only lightly familiar with Turbo
 I started with the unfamiliar to get it right before moving to the familiar.
 
 **11/28/2022**
-* Time: 2 hours
+* Time: 2 hours(ish)
 * Initial Rails App created
 * Working out deploy to Render
 
 **11/29 & 11/30 2022**
-* Time: 2 hours
+* Time: 2 hours(ish)
 * API initial layout
-* Investigate Tailwind CSS and initial Views
+* Investigate Tailwind CSS and build initial Views
 * Initial Message Model
 
-**12/1
-* Time:
+**12/1**
+* Time: 5 hours(ish)
 * Improved Message model to have a uuid column
   * overkill for this project but this allows for easier portability of data between databases such as for distributed databases that need to have their data balanced between dbs
   * left id as the identity column but if this level of portability isn't needed, the id could have been a uuid.
 * Formal(ish) Proposal and other readme additions
 * Model creation and indexing with specs
 * Dash Controller: index/search
+
+**12/2**
+* Time: 
+* Incoming messages API and specs
+* Outgoing API
 
 # Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 
@@ -238,7 +243,9 @@ The chances of having side effects is reduced as well due to the code being stri
 responsibility.
 
 ### Disadvantages Of This Approach
-It is added complexity and not every application needs this.
+It is added complexity and time to code. It is not suited to situations where
+this level of code isolation does not provide future time savings sufficient for the
+added time cost.
 
 ### Other Use Cases 
 This pattern is useful for isolating gems as well as third party apis. Sometimes a gem is great
