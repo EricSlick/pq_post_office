@@ -6,6 +6,10 @@ class Messages < ActiveRecord::Migration[7.0]
       t.string :status, limit: 15, index: {}
       t.string :phone, limit: 30, index: {}
       t.string :body
+      t.string :adapter
+      t.datetime :sent_at
+      t.datetime :delivered_at
+      t.string :status_message
       t.timestamps
     end
   end
