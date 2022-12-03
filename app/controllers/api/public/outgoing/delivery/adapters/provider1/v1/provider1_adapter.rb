@@ -13,8 +13,6 @@ module Api
 
                 end
 
-                private
-
                 def adapter_name
                   'provider1'
                 end

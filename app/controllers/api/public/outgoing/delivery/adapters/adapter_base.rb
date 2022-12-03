@@ -10,8 +10,6 @@ module Api
               Rails.logger.info("Message #{message_uuid} reported as delivered by #{adapter_name}")
             end
 
-            private
-
             def adapter_name
               raise ImplementMethod 'Child Class must implement #adapter_name'
             end

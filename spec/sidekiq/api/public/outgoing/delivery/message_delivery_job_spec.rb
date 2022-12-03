@@ -21,10 +21,17 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
       message = Message.find_by(uuid: message_uuid)
       message.update(sent_at: @sent_at, status: Message::STATUS[:sent])
     end
+
+    def adapter_name
+      'test'
+    end
+  end
+
+  before do
+    allow(TestAdapter).to receive(:new).and_return(adapter)
   end
 
   it 'will send the message to an adapter' do
-    allow(TestAdapter).to receive(:new).and_return(adapter)
     expect(adapter).to receive(:send_message).with(message.uuid)
     subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
   end
@@ -32,7 +39,6 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
   describe 'adapter response/error handling' do
     context 'when the adapter response is success' do
       it 'updates message.sent_at' do
-        allow(TestAdapter).to receive(:new).and_return(adapter)
         subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
         expect(message.reload.sent_at).to eq adapter.sent_at
         expect(message.status).to eq Message::STATUS[:sent]
@@ -40,16 +46,24 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
     end
 
     context 'when response is an exception' do
-      it 'will not retry the job' do
-        # expect it not to retry
-        # expect message.status
-        expect(false).to be "Implement adapter response errors!"
+      it 'will update message.status_info and not retry the job' do
+        allow(adapter).to receive(:send_message).and_raise("Test Exception")
+        expected_status_info = "Failed to send message to adapter(#{adapter.adapter_name}): Test Exception"
+        subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
+        expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to_not have_enqueued_sidekiq_job
+        expect(message.reload.status_info).to eq expected_status_info
       end
     end
 
     context 'when the adapter response is a non-200 code' do
-      it 'will not retry the job' do
-        expect(false).to be "Implement adapter response errors!"
+      let(:response){ {status: 'failed', code: '400', data: 'response data from third party' } }
+
+      it 'will update message.status_info and not retry the job' do
+        expected_status_info = "#{adapter.adapter_name.capitalize} failed with #{response[:code]}. Cause: #{response[:data]}"
+        allow(adapter).to receive(:send_message).and_return(response)
+        subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
+        expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to_not have_enqueued_sidekiq_job
+        expect(message.reload.status_info).to eq expected_status_info
       end
     end
   end

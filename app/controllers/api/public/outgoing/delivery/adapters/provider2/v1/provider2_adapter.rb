@@ -14,8 +14,6 @@ module Public
 
               end
 
-              private
-
               def adapter_name
                 'provider2'
               end
