@@ -5,8 +5,19 @@ module Api
         module Adapters
           module Provider1
             module V1
-              class Provider1Adapter
+              class Provider1Adapter < Api::Public::Outgoing::Delivery::Adapters::AdapterBase
+                # Send Message to the third party
+                # Update message.sent_at if successful
+                # Handle error conditions
+                def send_message(message_uuid)
 
+                end
+
+                private
+
+                def adapter_name
+                  'provider1'
+                end
               end
             end
           end

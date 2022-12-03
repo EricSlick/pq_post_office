@@ -19,8 +19,8 @@ module Api
               if errors.length > 0
                 render json: {errors: errors}.to_json, response_code: 400
               else
-                message = Message.new(build_new_message_params)
-                if message.save
+                message = create_new_message(build_new_message_params)
+                if message.persisted?
                   render json: params.to_json
                 else
                   render json: {error: {type: :internal, message_params: params, errors: message.errors.messages}}.to_json, response_code: 500
@@ -31,7 +31,7 @@ module Api
             def create_test_data
               num = (message_params[:num] || 1).to_i
               (1..num).each do |_n|
-                Message.create(
+                create_new_message(
                   status: Message::STATUS[:received],
                   phone: Faker::PhoneNumber.cell_phone,
                   body: Faker::Lorem.sentences(number: rand(1..5))
@@ -42,6 +42,12 @@ module Api
             end
 
             private
+
+            def create_new_message(build_params)
+              message = Message.new(build_params)
+              message.save
+              message
+            end
 
             def build_new_message_params
               {

@@ -20,7 +20,8 @@ RSpec.describe Api::Public::Outgoing::Delivery::AdapterManager do
       let(:message_body){ Faker::Lorem.sentences(number: rand(1..5)) }
       let(:balance_manager){ Api::Public::Outgoing::Delivery::BalanceManager.new(adapters: [])}
       let(:adapter_stub) { 'StubAdapter' }
-      it 'starts a sidekiq job that sends the message' do
+
+      it 'starts a sidekiq job for sending the message' do
         message.reload
         expected_job_json = {
           message_uuid: message.uuid,

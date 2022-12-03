@@ -7,7 +7,18 @@ module Public
         module Provider2
           module V1
             class Provider2Adapter
+              # Send Message to the third party
+              # Update message.sent_at if successful
+              # Handle error conditions
+              def send_message(message_uuid)
 
+              end
+
+              private
+
+              def adapter_name
+                'provider2'
+              end
             end
           end
         end
