@@ -64,6 +64,7 @@ I started with the unfamiliar to get it right before moving to the familiar.
 **12/3**
 * Time: 
 * Outgoing API fleshing out
+* Added error handling to delivery job
 
 # Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 

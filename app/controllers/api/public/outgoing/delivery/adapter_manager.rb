@@ -24,6 +24,7 @@ module Api
           end
 
           def fetch_adapter_klasses
+            @adapters = []
             autoload_dir = File.join(Rails.root, "app","controllers", "api", "public", "outgoing", "delivery", "adapters")
             Dir.glob(File.join(autoload_dir, "**", "*_adapter.rb")).collect do |file_path |
               file_path.slice!("#{Rails.root}/app/controllers/")
@@ -31,8 +32,9 @@ module Api
                 name.camelize
               end.join('::')
               klass_name.slice!('.rb')
-              klass_name.constantize
+              @adapters << klass_name.constantize
             end
+            @adapters
           end
         end
       end
