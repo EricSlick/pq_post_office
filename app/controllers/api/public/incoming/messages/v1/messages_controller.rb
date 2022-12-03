@@ -46,6 +46,7 @@ module Api
             def create_new_message(build_params)
               message = Message.new(build_params)
               message.save
+              Api::Public::Outgoing::Delivery::AdapterManager.new.deliver(message)
               message
             end
 

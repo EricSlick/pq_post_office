@@ -57,9 +57,13 @@ I started with the unfamiliar to get it right before moving to the familiar.
 * Dash Controller: index/search
 
 **12/2**
-* Time: 
+* Time: 6 hours
 * Incoming messages API and specs
-* Outgoing API
+* Outgoing API work started
+
+**12/3**
+* Time: 
+* Outgoing API fleshing out
 
 # Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 

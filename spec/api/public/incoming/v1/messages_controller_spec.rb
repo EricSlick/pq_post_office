@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::Public::Incoming::V1::Messages', type: :request do
+  let(:adapter_manager) { Api::Public::Outgoing::Delivery::AdapterManager.new }
+
+  before do
+    allow(Api::Public::Outgoing::Delivery::AdapterManager).to receive(:new).and_return(adapter_manager)
+    expect(adapter_manager).to receive(:deliver).at_most(2).times
+  end
+
   describe '#create' do
     it 'creates a message' do
       post api_public_incoming_messages_v1_messages_path,
