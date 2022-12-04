@@ -26,7 +26,7 @@ module Api
           def fetch_adapter_klasses
             @adapters = []
             autoload_dir = File.join(Rails.root, "app","controllers", "api", "public", "outgoing", "delivery", "adapters")
-            Dir.glob(File.join(autoload_dir, "**", "*_adapter.rb")).collect do |file_path |
+            Dir.glob(File.join(autoload_dir, "**", "*_adapters_controller.rb")).collect do |file_path |
               file_path.slice!("#{Rails.root}/app/controllers/")
               klass_name = file_path.split('/').map do |name|
                 name.camelize

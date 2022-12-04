@@ -38,7 +38,7 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
 
   describe 'adapter response/error handling' do
     context 'when the adapter response is success' do
-      it 'updates message.sent_at' do
+      it 'updates message.sent_at and status' do
         subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
         expect(message.reload.sent_at).to eq adapter.sent_at
         expect(message.status).to eq Message::STATUS[:sent]
@@ -56,14 +56,13 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
     end
 
     context 'when the adapter response is a non-200 code' do
-      let(:response){ {status: 'failed', code: '400', data: 'response data from third party' } }
+      let(:response){ { status: 'failed', code: '400', data: 'response data from third party' } }
 
       it 'will update message.status_info and not retry the job' do
-        expected_status_info = "#{adapter.adapter_name.capitalize} failed with #{response[:code]}. Cause: #{response[:data]}"
         allow(adapter).to receive(:send_message).and_return(response)
         subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
         expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to_not have_enqueued_sidekiq_job
-        expect(message.reload.status_info).to eq expected_status_info
+        expect(message.reload.status_info).to eq response[:data]
       end
     end
   end

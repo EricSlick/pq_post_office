@@ -27,13 +27,17 @@ module Api
             msg = "For message_uuid(#{message_uuid}), adapter(#{@adapter.adapter_name}) responded with #{response}"
             Rails.logger.info("MessageDeliverJob#handle_response: #{msg}")
 
+            message = fetch_message(message_uuid)
+
+            return if !message
+
             case response[:status]
             when 'success'
+              message.update!(remote_id: response[:data], status: Message::STATUS[:sent])
             when 'failed'
-              message = fetch_message(message_uuid)
-              message.update!(status_info: "#{@adapter.adapter_name.capitalize} failed with #{response[:code]}. Cause: #{response[:data]}") if message
+              message.update!(status_info: response[:data])
             else
-
+              Rails.logger.warn("MessageDeliveryJob: response had invalid response status(#{response[:status]}) for adapter(#{@adapter.adapter_name})")
             end
           end
 

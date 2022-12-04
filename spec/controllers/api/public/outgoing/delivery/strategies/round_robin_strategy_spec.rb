@@ -11,7 +11,8 @@ RSpec.describe Api::Public::Outgoing::Delivery::Strategies::RoundRobinStrategy d
   end
 
   it 'picks an adapter round robin style' do
-    # expect(subject).to receive(:rand).and_return(0)
-    # subject.use_adapter
+    expect(adapters[0]).to eq subject.use_adapter
+    expect(adapters[1]).to eq subject.use_adapter
+    expect(adapters[0]).to eq subject.use_adapter
   end
 end

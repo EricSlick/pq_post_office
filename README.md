@@ -13,18 +13,27 @@ that are responsible for sending those messages to end users.
 * Redis
 * Sidekiq
 
-## Setup
+## Run Locally
 
     bundle
     rails db:create
     rails db:migrate
 
-## Run Tests
+### Run Tests
     rspec
 
-## Run Server
-    rails s
-    https://localhost:3000
+### Run Server
+    ./bin/dev
+    view at https://localhost:3000
+
+### Run Ngrok
+To run locally be able to receive callbacks from Provider1 and Provider2, I am using `ngrok`.
+See: `https://dashboard.ngrok.com/get-started/setup`. After setup run,
+
+    bin/ngrok http 3000
+
+In `config/environments/development.rb` Search for `config.hosts <<` and replace the
+value with the ngrok 
 
 * Deployment instructions
   * Deployed on Render
@@ -109,7 +118,7 @@ in this area, so this was definitely not comprehensive.
 
 # Turbo/Stimulus
 I've done a small project recently trying out Turbo/Stimulus that could act as my 'spike'. I
-chose this as it's native to Rails 7, it makes doing reactive UI's far simpler than other 
+chose this as it's native to Rails 7, it makes doing reactive UIs far simpler than other 
 UI frameworks, such as React, Vue, etc. It fits my past experiences well and this project 
 is very simple and is not going to have millions of users. I want to better learn turbo/stimulus 
 and I believe it will let me do some nice improvements to the UI with little extra effort.
@@ -124,15 +133,9 @@ For this, the architecture encompasses the receiving, sending and display of mes
 receiving will be done via internal and public apis
 
 ## API Structure
-While this project isn't particularly big, I wanted to break out the API in the way I like as if it
-will have or has multiple APIs. This lets me shows how a more complicated API structure could be 
-configured to allow separation of responsibilities.
-
-At Snapdocs, they had many APIs that were mostly cluttered together. It made locating the right
-API and the code for it more difficult than it should be. As all startups, their code base grew
-organically and while there was good choices being made, I think this structure could have made 
-it easier to support. This structure is still new to me and I'm sure it can be improved upon or 
-even simplified and still achieve the same results.
+While this project isn't particularly big, I wanted to structure things as if there would be dozens
+of apis eventually. My choices here lets me show how this might be structured so that, hopefully, 
+it makes it easier to locate code.
 
 This project has two basic divisions of APIs: Internal, and Public.  Internal APIs are APIs only
 used by the company's internal echo system of apps and services. Public APIs are where 
@@ -228,7 +231,7 @@ by the application itself. This calls a manager class that handles two main thin
 load balancing and which third party adapter to dall, the third layer is the 
 third party adapter layer. This is where all the code resides for communicating
 with the third party. Conceptually, I think of these as layers where each layer
-has a hard wall between them where they only interact via an agreed-upon interfacxe.
+has a hard wall between them where they only interact via an agreed-upon interface.
 
 ### Internally Facing API Layer
 This is a single class that implements the API in the way that is most advantageous

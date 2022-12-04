@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_220312) do
     t.string "phone", limit: 30
     t.string "body"
     t.string "adapter"
+    t.string "remote_id"
     t.datetime "sent_at"
     t.datetime "delivered_at"
     t.string "status_info"
@@ -31,7 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_220312) do
     t.index ["uuid"], name: "index_messages_on_uuid", unique: true
   end
 
-  create_table "strategies_tables", force: :cascade do |t|
+  create_table "strategies", force: :cascade do |t|
     t.string "name", null: false
     t.json "data"
     t.datetime "created_at", null: false

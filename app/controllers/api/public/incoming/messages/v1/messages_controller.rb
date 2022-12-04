@@ -38,7 +38,7 @@ module Api
                 )
               end
 
-              render json: {:nothing => 'Stub response'}, response_code: 501
+              render json: {:nothing => 'Stub response'}, response_code: 200
             end
 
             private

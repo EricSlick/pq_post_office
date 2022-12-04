@@ -53,6 +53,7 @@ gem "bootsnap", require: false
 
 gem 'simple_form'
 gem 'sidekiq', '< 8'
+gem 'faraday'
 gem 'faker' # for generating fake messages in all environments
 
 group :development, :test do
