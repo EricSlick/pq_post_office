@@ -3,7 +3,7 @@
     <%= message['status'] %>
   </div>
   <div class="w-1/12 bg-gray-100 h-7 pl-2">
-    <%= message['adapter'].constantize.new.adapter_name.capitalize %>
+    <%= message['adapter']&.constantize.new.adapter_name.capitalize %>
   </div>
   <div class="w-2/12 bg-gray-100 h-7 pl-2"><%= message['phone'] %></div>
   <div class="w-8/12 bg-gray-100 h-7 pl-2"><%= message['body'] %></div>
