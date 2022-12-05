@@ -4,16 +4,13 @@ module Api
   module Public
     module Outgoing
       module Delivery
-        # Implements the Internal Facing API for sending a message
-        # Based on the strategy used it picks and adapter that will do the actual delivery of the message
+        # This acts as the Internal Facing API for sending a message
+        # Based on the strategy used, it picks an adapter that will do the actual delivery of the message
         # It creates a Sidekiq job to handle the calling of the adapter to send a message
         class AdapterManager
           def deliver(message)
-            message_json = {
-              message_uuid: message.uuid,
-              adapter: adapter
-            }.to_json
-            Api::Public::Outgoing::Delivery::MessageDeliveryJob.perform_async(message_json)
+            message.update(adapter: adapter)
+            Api::Public::Outgoing::Delivery::MessageDeliveryJob.perform_async(message.uuid)
           end
 
           private

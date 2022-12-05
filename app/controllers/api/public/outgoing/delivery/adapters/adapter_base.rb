@@ -36,9 +36,9 @@ module Api
 
             def callback_url
               if Rails.env.production?
-                "https://pq-post-office.onrender.com#{delivery_status_callback_api_public_outgoing_delivery_adapters_provider1_v1_provider1_adapters_path}"
+                "https://pq-post-office.onrender.com/api/public/outgoing/delivery/adapters/provider1/v1/provider1_adapters/delivery_status_callback"
               elsif Rails.env.development?
-                "https://63a6-38-44-145-216.ngrok.io#{delivery_status_callback_api_public_outgoing_delivery_adapters_provider1_v1_provider1_adapters_path}"
+                "https://63a6-38-44-145-216.ngrok.io/api/public/outgoing/delivery/adapters/provider1/v1/provider1_adapters/delivery_status_callback"
               else
                 "https://63a6-38-44-145-216.ngrok.io/api/public/outgoing/delivery/adapters/provider1/v1/provider1_adapters/delivery_status_callback"
               end

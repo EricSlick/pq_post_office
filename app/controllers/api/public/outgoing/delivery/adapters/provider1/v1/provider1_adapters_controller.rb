@@ -11,9 +11,11 @@ module Api
                 # Update message.sent_at if successful
                 # Handle error conditions
                 def send_message(message_uuid)
+                  Rails.logger.info("V1::Provider1AdaptersController: Processing #{message_uuid}")
+
                   return if !fetch_message(message_uuid: message_uuid)
-                  @call_response = Faraday.new(url: base_url).post('', request_params.to_json)
-                  Rails.logger.info"Provider1AdaptersController: response for #{message_uuid}: response_code(#{@call_response.response_code}), body(#{@call_response.body})"
+                  @call_response = Faraday.new(url: base_url).post('provider1', request_params.to_json)
+                  Rails.logger.info"Provider1AdaptersController: response for #{message_uuid}: status(#{@call_response.status}), body(#{@call_response.body})"
                   build_response
                 end
 
@@ -49,7 +51,7 @@ module Api
                 # if there is an error
                 #   'error' => 'error message'
                 def build_response
-                  response_hash = {code: @call_response.response_code}
+                  response_hash = {code: @call_response.status}
                   response_body = JSON.parse @call_response.body
                   if response_body['error']
                     response_hash[:status] = 'failed'
@@ -76,8 +78,6 @@ module Api
                 end
 
                 # curl -X POST -H "Content-Type: application/json" -d '{"to_number": "1112223333", "message": "This is my message", "callback_url": "https://63a6-38-44-145-216.ngrok.io/api/public/outgoing/delivery/adapters/provider1/v1/provider1_adapters/delivery_status_callback"}' "https://mock-text-provider.parentsquare.com/provider1"
-                # curl -X POST -H "Content-Type: application/json" -d '{"to_number": "1112223333", "message": "This is my message", "callback_url": "https://63a6-38-44-145-216.ngrok.io/dashes/provider1_callback"}' "https://mock-text-provider.parentsquare.com/provider1"
-                # '{"to_number": "1112223333", "message": "This is my message", "callback_url": "https://63a6-38-44-145-216.ngrok.io//api/public/outgoing/delivery/adapters/provider1/v1/provider1_adapters/callback"}'
                 def request_params
                   {
                     to_number: @message.phone,
@@ -87,7 +87,7 @@ module Api
                 end
 
                 def base_url
-                  'https://mock-text-provider.parentsquare.com/provider1'
+                  'https://mock-text-provider.parentsquare.com'
                 end
               end
             end

@@ -16,7 +16,7 @@ RSpec.describe Api::Public::Outgoing::Delivery::Adapters::Provider1::V1::Provide
       headers: {'Content-Type' => 'application/json'}
     )
   end
-  let(:response) { double(body: {message_id: message_id}.to_json, response_code: 201) }
+  let(:response) { double(body: {message_id: message_id}.to_json, status: 201) }
   let(:message_id) { 'amessageid'}
 
   describe '#send_message' do
@@ -31,7 +31,7 @@ RSpec.describe Api::Public::Outgoing::Delivery::Adapters::Provider1::V1::Provide
     end
 
     context "when there's an error" do
-      let(:fail_response) { double(body: {error: message_error}.to_json, response_code: 201) }
+      let(:fail_response) { double(body: {error: message_error}.to_json, status: 201) }
       let(:message_error) { 'test error' }
 
       it 'returns the error' do

@@ -1,5 +1,7 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  mount Sidekiq::Web => '/sidekiq'
 
   resources :dashes, controller: :dash, only: [:index] do
     collection do
@@ -16,6 +18,15 @@ Rails.application.routes.draw do
             namespace :provider1 do
               namespace :v1 do
                 resources :provider1_adapters, only: [] do
+                  collection do
+                    post :delivery_status_callback
+                  end
+                end
+              end
+            end
+            namespace :provider2 do
+              namespace :v1 do
+                resources :provider2_adapters, only: [] do
                   collection do
                     post :delivery_status_callback
                   end

@@ -6,10 +6,18 @@ module Api
         # See: Controller Api::Public::Outgoing::Delivery::AdapterManager
         class MessageDeliveryJob
           include Sidekiq::Job
+          sidekiq_options :queue => :default , :retry => 3
 
-          def perform(message_uuid:, adapter: )
-            @adapter = adapter.constantize.new
+          def perform(message_uuid)
+            Rails.logger.info()
+            message = Message.find_by(uuid: message_uuid)
+            if !message
+              Rails.logger.info("MessageDeliveryJob#perform message(#{message_uuid}) no longer exists (deleted?). Aborting Job.")
+              return
+            end
+            @adapter = message.adapter.constantize.new
             response = @adapter.send_message(message_uuid)
+
             handle_response(message_uuid, response)
           rescue StandardError => e
             handle_exception(message_uuid, e)
@@ -20,7 +28,7 @@ module Api
           def handle_exception(message_uuid, e)
             Rails.logger.error("MessageDeliverJob Failed: message: #{message_uuid} exception: #{e}")
             message = fetch_message(message_uuid)
-            message.update(status_info: "Failed to send message to adapter(#{@adapter.adapter_name}): #{e.message}") if message
+            message.update(status_info: "Failed to send message to adapter(#{@adapter&.adapter_name}): #{e.message}") if message
           end
 
           def handle_response(message_uuid, response)

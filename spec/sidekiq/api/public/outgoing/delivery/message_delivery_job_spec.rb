@@ -4,7 +4,8 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
     Message.create(
       status: Message::STATUS[:received],
       phone: Faker::PhoneNumber.cell_phone,
-      body: Faker::Lorem.sentences
+      body: Faker::Lorem.sentences,
+      adapter: 'TestAdapter'
     ).reload
   end
   let(:adapter) { TestAdapter.new }
@@ -20,6 +21,7 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
     def send_message(message_uuid)
       message = Message.find_by(uuid: message_uuid)
       message.update(sent_at: @sent_at, status: Message::STATUS[:sent])
+      {status: 'success', data: 'remote_id'}
     end
 
     def adapter_name
@@ -33,13 +35,13 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
 
   it 'will send the message to an adapter' do
     expect(adapter).to receive(:send_message).with(message.uuid)
-    subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
+    subject.perform(message.uuid)
   end
 
   describe 'adapter response/error handling' do
     context 'when the adapter response is success' do
       it 'updates message.sent_at and status' do
-        subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
+        subject.perform(message.uuid)
         expect(message.reload.sent_at).to eq adapter.sent_at
         expect(message.status).to eq Message::STATUS[:sent]
       end
@@ -49,7 +51,7 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
       it 'will update message.status_info and not retry the job' do
         allow(adapter).to receive(:send_message).and_raise("Test Exception")
         expected_status_info = "Failed to send message to adapter(#{adapter.adapter_name}): Test Exception"
-        subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
+        subject.perform(message.uuid)
         expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to_not have_enqueued_sidekiq_job
         expect(message.reload.status_info).to eq expected_status_info
       end
@@ -60,7 +62,7 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
 
       it 'will update message.status_info and not retry the job' do
         allow(adapter).to receive(:send_message).and_return(response)
-        subject.perform(message_uuid: message.uuid, adapter: 'TestAdapter')
+        subject.perform(message.uuid)
         expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to_not have_enqueued_sidekiq_job
         expect(message.reload.status_info).to eq response[:data]
       end

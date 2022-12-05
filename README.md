@@ -14,17 +14,18 @@ that are responsible for sending those messages to end users.
 * Sidekiq
 
 ## Run Locally
-
-    bundle
+    create a local repo (https://github.com/EricSlick/pq_post_office) 
+    bundle install
     rails db:create
     rails db:migrate
-
-### Run Tests
     rspec
 
 ### Run Server
     ./bin/dev
     view at https://localhost:3000
+
+### Run Sidekiq
+    bundle exec sidekiq
 
 ### Run Ngrok
 To run locally be able to receive callbacks from Provider1 and Provider2, I am using `ngrok`.
@@ -34,10 +35,14 @@ See: `https://dashboard.ngrok.com/get-started/setup`. After setup run,
 
 In `config/environments/development.rb` Search for `config.hosts <<` and replace the
 value with the ngrok 
-
-* Deployment instructions
+ 
+## Run "Production"
   * Deployed on Render
-  * Auto deploy on branch main update
+  * Auto deploys when branch 'main' is pushed to github
+
+## Creating Random Messages
+  * `https://pq-post-office.onrender.com/api/public/incoming/messages/v1/messages/create_test_data?num=2`
+  * will create the number of messages specified by the `num=` parameter with random values
 
 ## Development Log
 
@@ -71,9 +76,14 @@ I started with the unfamiliar to get it right before moving to the familiar.
 * Outgoing API work started
 
 **12/3**
-* Time: 
+* Time: 6 hours
 * Outgoing API fleshing out
 * Added error handling to delivery job
+
+**12/4**
+* Time: 6 hours
+* Finish outgoing api and callback with tests
+* Manual Testing, tweaks, etc.
 
 # Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 
