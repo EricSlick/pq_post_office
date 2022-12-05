@@ -11,7 +11,10 @@ module Api
               @weighted_adapters = []
               weights.each_with_index do | weight,index|
                 (1..weight).each do
-                  @weighted_adapters << @adapters[index]
+                  # when an adapter fails, it will try a new adapters. In this case, the adapters may
+                  # be missing one or more adapters and so the index here might be outside the range of @adapters
+                  # We then want it to not include a nil adapter value in the @weighted_adapters list.
+                  @weighted_adapters << @adapters[index] unless @adapters[index].nil?
                 end
               end
             end
