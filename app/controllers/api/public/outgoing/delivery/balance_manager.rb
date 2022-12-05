@@ -5,9 +5,10 @@ module Api
         class BalanceManager
           STRATEGIES ={
             round_robin: 'RoundRobinStrategy',
-            random: 'RandomStrategy'
+            random: 'RandomStrategy',
+            weighted: 'WeightedStrategy'
           }
-          DEFAULT_STRATEGY = :random
+          DEFAULT_STRATEGY = :weighted
           STRATEGIES_KLASSES = 'Api::Public::Outgoing::Delivery::Strategies'
 
           attr_accessor :adapters, :strategy

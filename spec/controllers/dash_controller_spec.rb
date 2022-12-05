@@ -37,7 +37,7 @@ RSpec.describe 'Dash', type: :request do
   context 'search by phone number' do
     it 'returns only the matching messages' do
       messages
-      get dashes_path, params: { search: { phone: '987654321' }}
+      get dashes_path, params: { search: '987654321' }
       expect(response.body).to_not include(messages[0].phone)
       expect(response.body).to_not include(messages[2].phone)
       expect(response.body).to include(messages[1].phone)
