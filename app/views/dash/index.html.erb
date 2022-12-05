@@ -8,7 +8,9 @@
     <div class="w-9/12 bg-gray-300 h-7 pl-2">Message Body</div>
   </div>
 
-  <% @messages.each do |message| %>
-    <%= render partial: 'row', locals: {message: message} %>
+  <%= turbo_frame_tag "messages" do %>
+    <% @messages.each do |message| %>
+      <%= render partial: 'row', locals: {message: message} %>
+    <% end %>
   <% end %>
 </main>

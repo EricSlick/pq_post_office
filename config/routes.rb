@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :dashes, controller: :dash, only: [:index] do
     collection do
-      post :provider1_callback
+      post :search
     end
   end
 

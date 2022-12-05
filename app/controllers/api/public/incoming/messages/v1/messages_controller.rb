@@ -34,7 +34,7 @@ module Api
                 create_new_message(
                   status: Message::STATUS[:received],
                   phone: Faker::PhoneNumber.cell_phone,
-                  body: Faker::Lorem.sentences(number: rand(1..5))
+                  body: Faker::Lorem.sentences(number: rand(1..5)).join(" ")
                 )
               end
 
