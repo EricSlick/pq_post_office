@@ -25,7 +25,7 @@ module Api
 
                 # called by Provider as a response to send_message if send_message was successful
                 # {
-                #   status: 'delivered' or 'invalid' (phone)
+                #   status: 'delivered' or 'invalid' (phone), 'failed'
                 #   message_id: "uuid" returned in response by provider when message is sent
                 # }
                 def delivery_status_callback
@@ -36,8 +36,10 @@ module Api
                     @message.update(status: Message::STATUS[:delivered])
                   when 'invalid'
                     @message.update(status: Message::STATUS[:undeliverable], status_info: 'Invalid Phone Number')
+                  when 'failed'
+                    @message.update(status: Message::STATUS[:failed], status_info: 'Unknown cause')
                   else
-                    Rails.logger.warn("V1::Provider1AdaptersController#delivery_status_callback Received unexpected status(#{params['status']}")
+                    Rails.logger.warn("V1::Provider1AdaptersController#delivery_status_callback Received unexpected status(#{params['status']}) params")
                   end
                   render json: {status: 'success'}, response_code: 200
                 end

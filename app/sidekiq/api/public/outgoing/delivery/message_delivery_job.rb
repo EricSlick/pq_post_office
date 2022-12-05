@@ -44,6 +44,11 @@ module Api
               message.update!(remote_id: response[:data], status: Message::STATUS[:sent])
             when 'failed'
               message.update!(status_info: response[:data])
+              if response[:code] == 500
+                skip_adapters = message.adapters_tried || []
+                skip_adapters << message.adapter
+                Api::Public::Outgoing::Delivery::AdapterManager.new.deliver_without(skip_adapters, message)
+              end
             else
               Rails.logger.warn("MessageDeliveryJob: response had invalid response status(#{response[:status]}) for adapter(#{@adapter.adapter_name})")
             end

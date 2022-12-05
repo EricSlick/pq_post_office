@@ -17,7 +17,8 @@ class Message < ApplicationRecord
     received: 'received',
     sent: 'sent',
     delivered: 'delivered',
-    undeliverable: 'undeliverable'
+    undeliverable: 'undeliverable',
+    failed: 'failed'
   }
   scope :with_phone, ->(phone_number) { where("phone LIKE ?", "%#{phone_number}%") }
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_03_220312) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_05_170731) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_220312) do
     t.string "status_info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "adapters_tried"
     t.index ["phone"], name: "index_messages_on_phone"
     t.index ["status"], name: "index_messages_on_status"
     t.index ["uuid"], name: "index_messages_on_uuid", unique: true
@@ -35,6 +36,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_220312) do
   create_table "strategies", force: :cascade do |t|
     t.string "name", null: false
     t.json "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "third_parties", force: :cascade do |t|
+    t.string "api"
+    t.string "name"
+    t.string "health"
+    t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

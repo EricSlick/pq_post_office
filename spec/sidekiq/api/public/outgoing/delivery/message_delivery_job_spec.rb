@@ -58,13 +58,26 @@ RSpec.describe Api::Public::Outgoing::Delivery::MessageDeliveryJob, type: :job d
     end
 
     context 'when the adapter response is a non-200 code' do
-      let(:response){ { status: 'failed', code: '400', data: 'response data from third party' } }
+      let(:response){ { status: 'failed', code: 400, data: 'response data from third party' } }
 
       it 'will update message.status_info and not retry the job' do
         allow(adapter).to receive(:send_message).and_return(response)
         subject.perform(message.uuid)
         expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to_not have_enqueued_sidekiq_job
         expect(message.reload.status_info).to eq response[:data]
+      end
+    end
+
+    context 'when the adapter response is 500' do
+      let(:response){ { status: 'failed', code: 500, data: 'response data from third party' } }
+      let(:adapter_manager) { Api::Public::Outgoing::Delivery::AdapterManager.new }
+
+      it 'will retry sending the message passing in the failed adapter' do
+        allow(adapter).to receive(:send_message).and_return(response)
+        allow(Api::Public::Outgoing::Delivery::AdapterManager).to receive(:new).and_return adapter_manager
+        allow(Message).to receive(:find_by).and_return message
+        expect(adapter_manager).to receive(:deliver_without).with(['TestAdapter'], message)
+        subject.perform(message.uuid)
       end
     end
   end

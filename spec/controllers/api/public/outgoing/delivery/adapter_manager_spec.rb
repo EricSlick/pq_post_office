@@ -29,6 +29,12 @@ RSpec.describe Api::Public::Outgoing::Delivery::AdapterManager, type: :api do
         subject.deliver(message)
         expect(Api::Public::Outgoing::Delivery::MessageDeliveryJob).to have_enqueued_sidekiq_job(message.uuid)
       end
+
+      context 'when skip_adapters is present' do
+        pending('test skip_adapters and no more adapters to try')
+        it 'skips over adapter/s and picks the next available' do
+        end
+      end
     end
   end
 end

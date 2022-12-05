@@ -36,6 +36,8 @@ module Api
                     @message.update(status: Message::STATUS[:delivered])
                   when 'invalid'
                     @message.update(status: Message::STATUS[:undeliverable], status_info: 'Invalid Phone Number')
+                  when 'failed'
+                    @message.update(status: Message::STATUS[:failed], status_info: 'Unknown cause')
                   else
                     Rails.logger.warn("V1::Provider2AdaptersController#delivery_status_callback Received unexpected status(#{params['status']}")
                   end
