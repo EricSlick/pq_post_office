@@ -3,6 +3,10 @@ This is a take home tech interview. The purpose is to build an application that 
 the receiving of messages and sending of those messages to one of two third party services 
 that are responsible for sending those messages to end users.
 
+I spent far more time on this than I expected because it was fun: I was trying some new tech and
+re-learning some rails skills when building a new app in Rails 7. I tried to keep some kind of track
+of the work I was doing, when and how much time I devoted each day.
+
 ## Tech Stack
 
 * Ruby 3.1.2
@@ -46,9 +50,10 @@ value with the ngrok
 
 ## Development Log
 
-I'm not rushing this take home test and am trying out some tech that's new to me. 
+I'm not rushing this take home test and am trying out some tech that's new to me.
 I've never used Render before or Tailwind. I am only lightly familiar with Turbo/Stimulus. 
-I started with the unfamiliar to get it right before moving to the familiar.
+I started with the unfamiliar to get it right before moving to the more familiar. So, I
+did a number of the requirements later in the project timeline. 
 
 **11/28/2022**
 * Time: 2 hours(ish)
@@ -71,19 +76,24 @@ I started with the unfamiliar to get it right before moving to the familiar.
 * Dash Controller: index/search
 
 **12/2**
-* Time: 6 hours
+* Time: 6 hours(ish)
 * Incoming messages API and specs
 * Outgoing API work started
 
 **12/3**
-* Time: 6 hours
+* Time: 6 hours(ish)
 * Outgoing API fleshing out
 * Added error handling to delivery job
 
 **12/4**
-* Time: 6 hours
+* Time: 6 hours(ish)
 * Finish outgoing api and callback with tests
 * Manual Testing, tweaks, etc.
+
+**12/5**
+* Time: 1.5 hours(ish)
+* Implement failed, retry with new adapter 
+* Review and a bit of cleanup and last minute tweaks
 
 # Formal(ish) Proposal
 note: Doing this in the README as a convenience. It is abbreviated due to the nature of this project. 
